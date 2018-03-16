@@ -82,7 +82,7 @@ class GymRunner(object):
 
         for episode in range(num_episodes):
             # Get ready for a new episode. Ensure dimensions are OK for agent.
-            state = self.env.reset().reshape(1, self.env.observation_space.shape[0])
+            state = self.env.reset().reshape(1, -1)
 
             # Accumulator for the total score for this episode.
             total_reward = 0
@@ -94,7 +94,7 @@ class GymRunner(object):
                 action = agent.select_action(state, training)
 
                 next_state, reward, done, _ = self.env.step(action)
-                next_state = next_state.reshape(1, self.env.observation_space.shape[0])
+                next_state = np.asarray(next_state).reshape(1, -1)
 
                 if training:
                     agent.record(state, action, reward, next_state, done)
