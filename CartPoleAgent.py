@@ -1,4 +1,5 @@
 import numpy as np
+import gym
 
 from keras import Sequential
 from keras.layers import Dense
@@ -52,11 +53,15 @@ class CartPoleAgent(QLearningAgent):
 
 
 if __name__ == "__main__":
-    runner = GymRunner('CartPole-v0')
+    env_id = 'CartPole-v0'
+    runner = GymRunner(env_id)
     agent = CartPoleAgent('models/cartpole-v0.h5')
 
     runner.train(agent, 2000, history_length=10)
-    runner.run(agent, 10, render=True)
+
+    # Make a new runner for testing, with monitoring on (producing video).
+    runner = GymRunner(env_id, monitor=True)
+    runner.run(agent, 1, render=True)
 
     agent.close()
     runner.close()
