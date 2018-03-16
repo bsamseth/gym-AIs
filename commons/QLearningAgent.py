@@ -58,6 +58,17 @@ class QLearningAgent(object):
         """
         pass
 
+    def early_stopping(self, history):
+        """
+        This method can be used to determine if we should stop training early,
+        based on the history of how the training has gone.
+
+        Default is to return False, indicating that we should not stop
+        :param history: sequence of (final_state, score) pairs
+        :return: True if we should terminate training, False otherwise.
+        """
+        return False
+
     def select_action(self, state, training=False):
         """
         Produce an action based on the learned model.

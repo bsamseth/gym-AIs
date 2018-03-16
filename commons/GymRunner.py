@@ -1,5 +1,5 @@
 from collections import deque
-from numpy import mean
+import numpy as np
 import gym
 
 
@@ -51,9 +51,7 @@ class GymRunner(object):
             training=False,
             verbose=True,
             render=False,
-            early_stopping=False,
-            early_stopping_mean_n=10,
-            early_stopping_mean_limit=float('inf')):
+            history_length=10):
         """
         Simulate a given number of episodes, using the agent to select
         actions along the way.
@@ -67,17 +65,13 @@ class GymRunner(object):
         :param training: true if agent should be trained, false by default
         :param verbose: true will print info about each episode, true by default
         :param render: true if the simulation should be rendered on screen
-        :param early_stopping: true if simulations should stop early
-        :param early_stopping_mean_n: number of episodes to include when
-                                      calculating the mean score across the
-                                      most recent episodes for early stopping
-        :param early_stopping_mean_limit: If average score is larger than this,
-                                          stop the iteration.
+        :param history_length: number of episodes to include in the history
+                               sent to the agent.early_stopping during training
         """
 
         # A sequence which keeps only the n most recent entries.
         # Used for early stopping.
-        last_n_scores = deque(maxlen=early_stopping_mean_n)
+        history = deque(maxlen=history_length)
 
         for episode in range(num_episodes):
             # Get ready for a new episode. Ensure dimensions are OK for agent.
@@ -104,17 +98,16 @@ class GymRunner(object):
                 if done:  # Environment says we are done, should be respected.
                     break
 
-            last_n_scores.append(total_reward)
+            history.append((state, total_reward))
 
             if verbose:
                 print(f'Episode {episode + 1}/{num_episodes} ' +
                       f'score = {total_reward}, ' +
                       (f'eps = {agent.epsilon:4.3f}, ' if training else '') +
-                      f'mean {mean(last_n_scores)}')
+                      f'mean {np.mean(np.asarray(history)[:,1])}')
 
             # Determine if we should stop training early.
-            if training and early_stopping \
-                    and mean(last_n_scores) > early_stopping_mean_limit:
+            if training and agent.early_stopping(history):
                 break
 
             # Let model learn from its recorded memory.
