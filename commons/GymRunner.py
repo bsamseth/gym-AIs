@@ -23,13 +23,20 @@ class GymRunner(object):
         runner.close()
     """
 
-    def __init__(self, env_id, max_timesteps=10000):
+    def __init__(self, env_id, max_timesteps=10000,
+                 monitor=False, logging_dir='log/'):
         """
         :param env_id: name of the gym environment to use
         :param max_timesteps: maximum timesteps per episode
+        :param monitor: true if a monitor wrapper should be used
+        :param logging_dir: directory for monitor output
         """
         self.max_timesteps = max_timesteps
-        self.env = gym.wrappers.Monitor(gym.make(env_id), 'log/', force=True)
+        self.env = gym.make(env_id)
+        if monitor:
+            self.env = gym.wrappers.Monitor(self.env,
+                                            logging_dir,
+                                            force=True)
 
     def train(self, agent, *args, **kwargs):
         """
