@@ -7,6 +7,8 @@ class GymRunner(object):
     """
     Class used as main interface between an agent and the gym environment.
 
+    Code modified from write-up on gym website by github.com/ruippeixotog.
+
     Example usage:
 
         runner = GymRunner('CartPole-v0')

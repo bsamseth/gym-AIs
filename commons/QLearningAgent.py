@@ -15,6 +15,8 @@ class QLearningAgent(object):
     Subclasses may only need to supply an implementation of the
     build_model() method, defining a specific model. It may also be of
     interest to tune some of the hyper-parameters.
+
+    Code modified from write-up on gym website by github.com/ruippeixotog.
     """
 
     def __init__(self, action_space_size, model_store_file=None):
