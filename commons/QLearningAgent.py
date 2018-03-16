@@ -19,7 +19,10 @@ class QLearningAgent(object):
     Code modified from write-up on gym website by github.com/ruippeixotog.
     """
 
-    def __init__(self, action_space_size, model_store_file=None):
+    def __init__(self, action_space_size, model_store_file=None,
+                 gamma=0.9, epsilon=1, epsilon_decay=0.995,
+                 epsilon_min=0.05, batch_size=32,
+                 memory_size_multiplier=5):
         """
         Initialize the agent.
 
@@ -31,18 +34,25 @@ class QLearningAgent(object):
 
         :param action_space_size: number of actions that can be made in a state
         :param model_store_file: file used to save model weights in
+        :param gamma: discount rate for future rewards
+        :param epsilon: probability of choosing random actions in training
+        :param epsilon_decay: decay rate applied per training batch
+        :param epsilon_min:  minimum value epsilon may decay to
+        :param batch_size: size of training batches sampled when learning
+        :param memory_size_multiplier: memory size, units of batch_size
         """
         self.action_space_size = action_space_size
         self.model_store_file = model_store_file
         self.is_trained = False
 
-        self.gamma = 0.90  # Discount rate for future rewards.
-        self.epsilon = 1  # Probability of choosing random actions in training.
-        self.epsilon_decay = 0.995  # Decay rate applied per training batch.
-        self.epsilon_min = 0.1  # Minimum value epsilon may decay to.
-        self.batch_size = 30  # Size of training batches sampled when learning.
+        self.gamma = gamma
+        self.epsilon = epsilon
+        self.epsilon_decay = epsilon_decay
+        self.epsilon_min = epsilon_min
+        self.batch_size = batch_size
 
-        self.memory = deque(maxlen=2000)  # Container for observed simulations.
+        # Container for observed simulations.
+        self.memory = deque(maxlen=self.batch_size * memory_size_multiplier)
 
         self.model = self.build_model()
 
