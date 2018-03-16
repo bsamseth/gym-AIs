@@ -11,7 +11,7 @@ class CartPoleAgent(QLearningAgent):
     A Q-learning agent using a neural network to solve the
     CartPole environment in gym.
 
-    Code modified from write-up on gym website.
+    Code modified from write-up on gym website by github.com/ruippeixotog.
     """
     def __init__(self, model_store_file=None):
         # Action space for CartPole is 2 (left force or right force).
