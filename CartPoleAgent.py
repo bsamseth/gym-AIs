@@ -1,5 +1,5 @@
 from keras import Sequential
-from keras.layers import Dense, Dropout
+from keras.layers import Dense
 from keras.optimizers import Adam
 
 from commons.GymRunner import GymRunner
@@ -32,10 +32,11 @@ class CartPoleAgent(QLearningAgent):
         # CartPole observation space is four-dimensional.
         model.add(Dense(12, activation='relu', input_dim=4))
         model.add(Dense(12, activation='relu'))
-        model.add(Dense(2, activation='linear'))
+        model.add(Dense(self.action_space_size, activation='linear'))
         model.compile(Adam(lr=0.005), 'mse')
 
         return model
+
 
 if __name__ == "__main__":
     runner = GymRunner('CartPole-v0')
