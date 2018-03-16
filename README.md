@@ -1,3 +1,5 @@
+[![license](https://img.shields.io/badge/license-Unlicense-brightgreen.svg)](https://github.com/bsamseth/gym-AIs/blob/master/LICENSE)
+
 # gym-AIs
 
 This repository contains implementations of AIs (trying to) solve games from OpenAI Gym.
