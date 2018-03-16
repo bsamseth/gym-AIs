@@ -29,7 +29,7 @@ class GymRunner(object):
         :param max_timesteps: maximum timesteps per episode
         """
         self.max_timesteps = max_timesteps
-        self.env = gym.make(env_id)
+        self.env = gym.wrappers.Monitor(gym.make(env_id), 'log/', force=True)
 
     def train(self, agent, *args, **kwargs):
         """
