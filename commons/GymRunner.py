@@ -24,7 +24,7 @@ class GymRunner(object):
     """
 
     def __init__(self, env_id, max_timesteps=10000,
-                 monitor=False, logging_dir='log/'):
+                 monitor=False, logging_dir='../log/'):
         """
         :param env_id: name of the gym environment to use
         :param max_timesteps: maximum timesteps per episode
