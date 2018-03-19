@@ -1,7 +1,6 @@
 import numpy as np
 
-from commons.GymRunner import GymRunner
-from commons.QLearningAgent import QLearningAgent
+from agents.QLearningAgent import QLearningAgent
 
 
 class MountainCarAgent(QLearningAgent):
@@ -53,14 +52,13 @@ class MountainCarAgent(QLearningAgent):
 
 
 if __name__ == "__main__":
+    from commons.GymRunner import GymRunner
+
     env_id = 'MountainCar-v0'
     runner = GymRunner(env_id)
-    agent = MountainCarAgent('models/mountaincar-v0.h5')
+    agent = MountainCarAgent()
 
-    # Training is skipped, as model cannot learn.
-    runner.train(agent, 2000, history_length=10)
-
-    # Make a new runner for testing, with monitoring on (producing video).
+    # Make a runner for testing, with monitoring on (producing video).
     runner = GymRunner(env_id, monitor=True)
     runner.run(agent, 1, render=True)
 

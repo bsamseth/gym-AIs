@@ -4,26 +4,25 @@ from keras import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 
+from commons.GymRunner import GymRunner
 from agents.QLearningAgent import QLearningAgent
 
 
-class CartPoleAgent(QLearningAgent):
+class FrozenLakeAgent(QLearningAgent):
     """
     A Q-learning agent using a neural network to solve the
-    CartPole environment in gym.
-
-    Code modified from write-up on gym website by github.com/ruippeixotog.
+    FrozenLake environment in gym.
     """
 
     def __init__(self, model_store_file=None):
-        # Action space for CartPole is 2 (left force or right force).
-        super().__init__(action_space_size=2,
+        # Action space for FrozenLake is 4 (left, right, up and down).
+        super().__init__(action_space_size=4,
                          model_store_file=model_store_file,
                          gamma=0.99,
                          epsilon=0.5,
                          epsilon_decay=0.995,
                          epsilon_min=0.01,
-                         batch_size=32)
+                         batch_size=10)
 
     def build_model(self):
         """
@@ -37,8 +36,8 @@ class CartPoleAgent(QLearningAgent):
 
         model = Sequential()
 
-        # CartPole observation space is four-dimensional.
-        model.add(Dense(16, activation='relu', input_dim=4))
+        # FrozenLake observation space is 1-dimensional.
+        model.add(Dense(16, activation='relu', input_dim=1))
         model.add(Dense(16, activation='relu'))
         model.add(Dense(self.action_space_size, activation='linear'))
         model.compile(loss='mse', optimizer=Adam(lr=0.001))
@@ -47,14 +46,13 @@ class CartPoleAgent(QLearningAgent):
 
     def early_stopping(self, history):
         end_states, scores = np.asarray(history).T
-        return np.mean(scores) > 199
+        return np.mean(scores) > 0 and False
 
 
 if __name__ == "__main__":
-    from commons.GymRunner import GymRunner
-    env_id = 'CartPole-v0'
+    env_id = 'FrozenLake-v0'
     runner = GymRunner(env_id)
-    agent = CartPoleAgent('../models/cartpole-v0.h5')
+    agent = FrozenLakeAgent('models/frozenlake-v0.h5')
 
     runner.train(agent, 2000, history_length=10)
 

@@ -1,5 +1,4 @@
-from commons.GymRunner import GymRunner
-from commons.QLearningAgent import QLearningAgent
+from agents.QLearningAgent import QLearningAgent
 
 
 class RandomAgent(QLearningAgent):
@@ -31,6 +30,8 @@ class RandomAgent(QLearningAgent):
 
 
 if __name__ == "__main__":
+    from commons.GymRunner import GymRunner
+
     env_id = 'CartPole-v0'
     runner = GymRunner(env_id)
     agent = RandomAgent(runner.env.action_space)
