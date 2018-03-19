@@ -124,5 +124,13 @@ class GymRunner(object):
     def close(self):
         """
         Close the environment for proper exit from rendered graphics.
+
+        When using a Monitor, the close seems to not work properly
+        every time. Therefore, try to first close the monitor.env, if
+        present. See https://github.com/openai/gym/issues/893.
         """
+        try:
+            self.env.env.close()
+        except AttributeError:
+            pass
         self.env.close()
