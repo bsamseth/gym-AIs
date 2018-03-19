@@ -16,22 +16,16 @@ class MountainCarAgent(QLearningAgent):
     and then *really* exploit it.
     """
 
-    def __init__(self, model_store_file=None):
+    def __init__(self):
         # Action space for MountainCar is 3 (left, nothing, right).
         super().__init__(action_space_size=3)
         self.is_trained = True
 
-    def build_model(self):
-        """
-        Returns a human logical driver model.
-
-        The drivers policy is simply to accelerate in which ever
-        direction the car i currently moving.
-
-        :return: A "model" with same interface as a Keras-model.
-        """
-
         class HumanDriver(object):
+            """
+            The drivers policy is simply to accelerate in which ever
+            direction the car is currently moving.
+            """
             def predict(self, state):
                 pred = [0, 0, 0]
                 x, v = state[0]
@@ -52,7 +46,10 @@ class MountainCarAgent(QLearningAgent):
             def save_weights(self, *args, **kwargs):
                 pass
 
-        return HumanDriver()
+        self.model = HumanDriver()
+
+    def build_model(self):  # Should override abstract method.
+        pass
 
 
 if __name__ == "__main__":
